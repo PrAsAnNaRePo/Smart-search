@@ -61,7 +61,7 @@ class Agent:
             temperature=1.0,
             top_p=1.0
         )
-
+        print(response)
         self.history.append(response.choices[0].message)
 
         if response.choices[0].message.tool_calls:

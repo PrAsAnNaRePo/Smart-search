@@ -1,17 +1,11 @@
-from firecrawl import FirecrawlApp
+from exa_py import Exa
 from openai import OpenAI
 import os
 
 class WebAgent:
     def __init__(self) -> None:
-        self.search_client = FirecrawlApp(api_key=os.environ.get('FIRECRAWL_API_KEY'))
+        self.search_client = Exa(api_key="e0985a36-3e58-407b-baf4-ee149437e47d")
         self.agent_client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
-
-        self.params = {
-            "searchOptions": {
-                "limit": 3
-            }
-        }
 
         self.session_history = []
 
@@ -29,15 +23,26 @@ class WebAgent:
             dictionary containing the title and URL of a source.
 
         """
-        results = self.search_client.search(query, params=self.params)
+        results = self.search_client.search_and_contents(
+            query=query,
+            type="auto",
+            num_results=5,
+            text=True
+        ).results
+
         print("got results from search api")
+
         sources = []
         search_results = []
         for result in results:
-            if result['metadata']['sourceURL'] not in self.session_history:
-                self.session_history.append(result['metadata']['sourceURL'])
-                md_contents = self.summarize_content(result['markdown'])
-                metadata = result['metadata']
+            if result.url not in self.session_history:
+                self.session_history.append(result.url)
+                md_contents = self.summarize_content(result.text)
+                metadata = {
+                    "title": result.title,
+                    "sourceURL": result.url,
+                    "published_date": result.published_date
+                }
                 search_results.append(
                     {
                         'metadata': metadata,
