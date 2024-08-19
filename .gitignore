@@ -1,0 +1,6 @@
+__pycache__
+
+.env
+agent.py
+tem.py
+web_scrapper.py
