@@ -1,11 +1,8 @@
 import streamlit as st
-from dotenv import load_dotenv
 import os
 import json
 from openai import OpenAI
 from exa_py import Exa
-
-load_dotenv()
 
 class WebAgent:
     def __init__(self, num_search_results) -> None:
