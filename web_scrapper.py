@@ -4,7 +4,7 @@ import os
 
 class WebAgent:
     def __init__(self) -> None:
-        self.search_client = Exa(api_key="e0985a36-3e58-407b-baf4-ee149437e47d")
+        self.search_client = Exa(api_key=os.environ.get('EXA_API_KEY'))
         self.agent_client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
 
         self.session_history = []
